@@ -1,7 +1,6 @@
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QLineEdit
 from PyQt5.QtGui import QFont
-from time import *
 from TXT import *
 
 class TestWin(QWidget):
@@ -10,14 +9,14 @@ class TestWin(QWidget):
         super().__init__()
         self.set_appear()
         self.initUI()
-        #self.connects()
+        self.connects()
         self.show()
 
 
     def set_appear(self):
         #название окна, его размеры и в какой точке оно будет находиться
-        self.setWindowTitle('Тест Руфье')
-        self.resize(1000, 600)
+        self.setWindowTitle('Тест Руфье 2')
+        self.resize(size_win_w, size_win_h)
         #self.move(200, 100)
 
 
@@ -39,8 +38,6 @@ class TestWin(QWidget):
         self.text_test3.setFont(QFont('Arial', 10))
         self.text_timer = QLabel(str(mw2_timer))
         self.text_timer.setFont(QFont('Arial', 50))
-
-        self.timing = time()
 
         self.line_name = QLineEdit()#'txt_hintname'
         self.line_age = QLineEdit()#'txt_hintage'
