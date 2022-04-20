@@ -1,42 +1,44 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QVBoxLayout, QPushButton, QHBoxLayout, QLineEdit
-from PyQt5.QtGui import QFont
+from PyQt5.QtCore import Qt, QTimer, QTime, QLocale
+from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFont, QPixmap  # проверка типов вводимых значений
+from PyQt5.QtWidgets import (
+    QApplication, QWidget,
+    QHBoxLayout, QVBoxLayout, QGridLayout,
+    QGroupBox, QRadioButton,
+    QPushButton, QLabel, QListWidget, QLineEdit)
+
 from TXT import *
 
 class FinalWin(QWidget):
-    def __init__(self):
+    def __init__(self, exp):
+        ''' окно, в котором проводится опрос '''
         super().__init__()
-        self.set_appear()
+
+        # получаем данные об эксперименте
+        self.exp = exp
+
+        # создаём и настраиваем графические элементы:
         self.initUI()
-        self.connects()
+
+        # устанавливает, как будет выглядеть окно (надпись, размер, место)
+        self.set_appear()
+
+        # старт:
         self.show()
 
     def set_appear(self):
         # название окна его размеры впрочем как и всегда
         self.setWindowTitle('Тест Руфье 3')
-        self.resize(size_win_w, size_win_h)
-
+        self.resize(win_width, win_height)
 
     def initUI(self):
         # отрисование всего там копок линий и короче всего
-        self.lbl_score = QLabel('Индекс Руфье: ' + str(final_index))
-        self.lbl_score.setFont(QFont('Arial', 10))
-        self.lbl_works_heart = QLabel('Работоспособность сердца: ' + final_heart)
-        self.lbl_works_heart.setFont(QFont('Arial', 10))
-
+        self.final_index = (4 * (int(self.exp.t1) + int(self.exp.t2) + int(self.exp.t3)) - 200) / 10
+        self.lbl_score = QLabel('Индекс Руфье: ' + str(self.final_index))
+        self.lbl_score.setFont(QFont('Arial', 36))
+        self.pixmap = QPixmap('cell.jpg')
+        self.lbl = QLabel()
+        self.lbl.setPixmap(self.pixmap)
         self.h_line = QVBoxLayout()
-
+        self.h_line.addWidget(self.lbl)
         self.h_line.addWidget(self.lbl_score, alignment = Qt.AlignCenter)
-        self.h_line.addWidget(self.lbl_works_heart, alignment = Qt.AlignCenter)
-
         self.setLayout(self.h_line)
-
-
-    def connects(self):
-        pass
-
-
-
-app = QApplication([])
-mw = FinalWin()
-app.exec_()
