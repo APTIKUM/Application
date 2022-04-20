@@ -33,7 +33,7 @@ class FinalWin(QWidget):
     def initUI(self):
         # отрисование всего там копок линий и короче всего
         self.final_index = (4 * (int(self.exp.t1) + int(self.exp.t2) + int(self.exp.t3)) - 200) / 10
-        self.lbl_score = QLabel('Индекс Руфье: ' + str(self.final_index))
+        self.lbl_score = QLabel('Ваш индекс Руфье: ' + str(self.final_index))
         self.lbl_score.setFont(QFont('Arial', 36))
         self.pixmap = QPixmap('cell.jpg')
         self.lbl = QLabel()
