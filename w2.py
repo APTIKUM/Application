@@ -1,12 +1,15 @@
 from PyQt5.QtCore import Qt, QTimer, QTime, QLocale
+from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFont  # проверка типов вводимых значений
 from PyQt5.QtWidgets import (
     QApplication, QWidget,
     QHBoxLayout, QVBoxLayout, QGridLayout,
     QGroupBox, QRadioButton,
     QPushButton, QLabel, QListWidget, QLineEdit)
-from PyQt5.QtGui import QDoubleValidator, QIntValidator, QFont
-from TXT import *
+
+from instr import *
+#from final_win import *
 from Window3 import *
+
 
 class Experiment():
     def __init__(self, age, test1, test2, test3):
@@ -20,16 +23,25 @@ class TestWin(QWidget):
     def __init__(self):
         ''' окно, в котором проводится опрос '''
         super().__init__()
+
+        # создаём и настраиваем графические элементы:
         self.initUI()
+
+        # устанавливает связи между элементами
         self.connects()
+
+        # устанавливает, как будет выглядеть окно (надпись, размер, место)
         self.set_appear()
+
+        # старт:
         self.show()
 
+    ''' устанавливает, как будет выглядеть окно (надпись, размер, место) '''
 
     def set_appear(self):
-        #название окна, его размеры и в какой точке оно будет находиться
-        self.setWindowTitle('Тест Руфье 2')
-        self.resize(1000, 600)
+        self.setWindowTitle(txt_title)
+        self.resize(win_width, win_height)
+        self.move(win_x, win_y)
 
     def initUI(self):
         ''' создаёт графические элементы '''
@@ -46,20 +58,15 @@ class TestWin(QWidget):
         self.text_timer = QLabel(txt_timer)
         self.text_timer.setFont(QFont("Times", 36, QFont.Bold))
 
-        self.line_name = QLineEdit()
-
+        self.line_name = QLineEdit(txt_hintname)
 
         self.line_age = QLineEdit(txt_hintage)
-        self.line_age.setInputMask("999")
 
         self.line_test1 = QLineEdit(txt_hinttest1)
-        self.line_test1.setInputMask("999")
 
         self.line_test2 = QLineEdit(txt_hinttest2)
-        self.line_test2.setInputMask("999")
 
         self.line_test3 = QLineEdit(txt_hinttest3)
-        self.line_test3.setInputMask("999")
 
         self.l_line = QVBoxLayout()
         self.r_line = QVBoxLayout()
@@ -85,7 +92,7 @@ class TestWin(QWidget):
 
     def next_click(self):
         self.hide()
-        self.exp = Experiment(int(self.line_age.text()), int(self.line_test1.text()), int(self.line_test2.text()), int(self.line_test3.text()))
+        self.exp = Experiment(int(self.line_age.text()), self.line_test1.text(), self.line_test2.text(), self.line_test3.text())
         self.fw = FinalWin(self.exp)
 
     def timer_test(self):
@@ -100,6 +107,7 @@ class TestWin(QWidget):
         time = QTime(0, 0, 30)
         self.timer = QTimer()
         self.timer.timeout.connect(self.timer2Event)
+        # одно приседание в 1.5 секунды
         self.timer.start(1500)
 
     def timer_final(self):
@@ -112,19 +120,19 @@ class TestWin(QWidget):
     def timer1Event(self):
         global time
         time = time.addSecs(-1)
-        self.text_timer.setText(time.toString('hh:mm:ss'))
-        self.text_timer.setFont(QFont('Arial', 36, QFont.Bold))
-        self.text_timer.setStyleSheet('color: rgb(0, 0, 0)')
-        if time.toString('hh:mm:ss') == "00:00:00":
+        self.text_timer.setText(time.toString("hh:mm:ss"))
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold))
+        self.text_timer.setStyleSheet("color: rgb(0,0,0)")
+        if time.toString("hh:mm:ss") == "00:00:00":
             self.timer.stop()
 
     def timer2Event(self):
         global time
         time = time.addSecs(-1)
-        self.text_timer.setText(time.toString('hh:mm:ss')[6:8])
-        self.text_timer.setStyleSheet('color: rgb(0, 0, 0)')
-        self.text_timer.setFont(QFont('Arial', 36, QFont.Bold))
-        if time.toString('hh:mm:ss') == '00:00:00':
+        self.text_timer.setText(time.toString("hh:mm:ss")[6:8])
+        self.text_timer.setStyleSheet("color: rgb(0,0,0)")
+        self.text_timer.setFont(QFont("Times", 36, QFont.Bold))
+        if time.toString("hh:mm:ss") == "00:00:00":
             self.timer.stop()
 
     def timer3Event(self):
@@ -147,8 +155,6 @@ class TestWin(QWidget):
         self.btn_test2.clicked.connect(self.timer_sits)
         self.btn_test3.clicked.connect(self.timer_final)
 
-
-'''app = QApplication([])
+app = QApplication([])
 mw = TestWin()
-app.exec_()'''
-
+app.exec_()
